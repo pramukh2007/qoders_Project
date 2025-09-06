@@ -1,0 +1,25 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())  // SERIAL PRIMARY KEY
+  email     String    @unique
+  password  String
+  receipts  Receipt[] // relation to receipts
+}
+
+model Receipt {
+  id           Int      @id @default(autoincrement()) // SERIAL PRIMARY KEY
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  raw_text     String?  // TEXT, nullable
+  ocr_amount   Float?   // NUMERIC, nullable
+  final_amount Float?   // NUMERIC, nullable
+  created_at   DateTime @default(now()) // TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+}

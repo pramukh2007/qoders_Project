@@ -4,22 +4,24 @@
   "type": "module",
   "main": "receipt-scanner-backend/src/server.js",
   "scripts": {
-    "start": "node receipt-scanner-backend/src/server.js",
-    "dev": "nodemon receipt-scanner-backend/src/server.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
     "@tailwindcss/vite": "^4.1.13",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
+    "pg": "^8.10.0",
     "prisma": "^6.15.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "tailwindcss": "^4.1.13",
-    "tesseract.js": "^6.0.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "pg": "^8.10.0"
+    "tesseract.js": "^6.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.0"

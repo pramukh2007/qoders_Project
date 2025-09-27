@@ -1,20 +1,35 @@
-import express from "express";
-import multer from "multer";
-import {
-  previewReceipt,
-  uploadReceipt,
-  listReceipts,
-  summaryReceipts,
-} from "../controllers/receiptController.js";
-import { protect } from "../middleware/authMiddleware.js";
+import express from 'express';
+import { uploadReceipt, getReceipts } from '../controllers/receiptController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
+import multer from 'multer';
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    const ext = file.mimetype.split('/')[1];
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JPEG, PNG, and PDF files are allowed'));
+    }
+  }
+});
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
 
 // Routes
-router.post("/preview", protect, upload.single("receipt"), previewReceipt);
-router.post("/upload", protect, upload.single("receipt"), uploadReceipt);
-router.get("/list", protect, listReceipts);
-router.get("/summary", protect, summaryReceipts);
+router.post('/', authMiddleware, upload.single('receipt'), uploadReceipt);
+router.get('/', authMiddleware, getReceipts);
+
 
 export default router;

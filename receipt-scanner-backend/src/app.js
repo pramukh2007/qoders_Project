@@ -1,24 +1,19 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import authRoutes from "./routes/authRoutes.js";
-import receiptRoutes from "./routes/receiptRoutes.js";
+import express from 'express';
+import cors from 'cors';
+import authRoutes from './routes/authRoutes.js';
+import receiptRoutes from './routes/receiptRoutes.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json()); // parse JSON
-
-// Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/receipts", receiptRoutes);
-
-// Health check
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/api/auth', authRoutes);
+app.use('/api/receipts', receiptRoutes);
 
 export default app;

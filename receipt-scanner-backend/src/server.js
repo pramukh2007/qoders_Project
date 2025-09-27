@@ -1,19 +1,18 @@
-import express from "express";
-import dotenv from "dotenv";
-import authRoutes from "./routes/authRoutes.js";
-import receiptRoutes from "./routes/receiptRoutes.js";
+import app from './app.js';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
-const app = express();
-
-app.use(express.json());
-
-// Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/receipts", receiptRoutes);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
+const uploadsDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
 
-
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

@@ -15,11 +15,12 @@ model User {
 }
 
 model Receipt {
-  id           Int      @id @default(autoincrement()) // SERIAL PRIMARY KEY
+  id           Int      @id @default(autoincrement())
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       Int
-  raw_text     String?  // TEXT, nullable
-  ocr_amount   Float?   // NUMERIC, nullable
-  final_amount Float?   // NUMERIC, nullable
-  created_at   DateTime @default(now()) // TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  raw_text     String?
+  ocr_amount   Float?
+  final_amount Float?
+  created_at   DateTime @default(now())
+  fileUrl      String? // Add this field
 }
